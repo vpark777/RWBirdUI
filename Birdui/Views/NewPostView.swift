@@ -10,13 +10,13 @@ import SwiftUI
 
 struct NewPostView: View {
   
-  var postHandler: PostViewModel
+  var postViewModel: PostViewModel
   @Environment(\.presentationMode) var presentationMode
   
   @State var username: String = ""
   @State var postText: String = ""
   @State var showImagePicker = false
-  @State var image: UIImage?
+  @State var uiImage: UIImage?
   
   let imageSize: CGFloat = 200
   
@@ -25,52 +25,49 @@ struct NewPostView: View {
     VStack {
       Text("New Post")
         .font(.headline)
-      
       Form {
         TextField("Username", text: $username)
-        
         Button("Pick image") {
           self.showImagePicker = true
         }
-        
-        if image != nil {
-          Image(uiImage: image!)
+        if uiImage != nil {
+          Image(uiImage: uiImage!)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: imageSize, height: imageSize)
         }
-        
         TextField("Post text", text: $postText)
       }
-      
       HStack {
         Button("Cancel") {
           self.presentationMode.wrappedValue.dismiss()
         }
-        
         Spacer()
-        
         Button("Post") {
-          self.postHandler.addPost(post: MediaPost(textBody: self.postText, userName: self.username, timestamp: Date(), uiImage: self.image))
+          self.postViewModel.addPost(post: MediaPost(textBody: self.postText, userName: self.username, timestamp: Date(), uiImage: self.uiImage))
           self.presentationMode.wrappedValue.dismiss()
         }
         .disabled(username.isEmpty && postText.isEmpty)
       }
       .padding()
     }
-      
     .sheet(isPresented: $showImagePicker) {
       // TODO: Show ImagePicker
       Text("Replace with code to show ImagePicker")
     }
   }
+  
 }
 
 
 struct NewPostView_Previews: PreviewProvider {
   
   static var previews: some View {
-    NewPostView(postHandler: PostViewModel())
+    Group {
+      NewPostView(postViewModel: PostViewModel())
+      NewPostView(postViewModel: PostViewModel())
+        .preferredColorScheme(.dark)
+    }
   }
   
 }

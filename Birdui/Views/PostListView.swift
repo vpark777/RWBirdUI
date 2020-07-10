@@ -10,34 +10,22 @@ import SwiftUI
 
 struct PostListView: View {
   
-  var mediaPosts = PostViewModel()
+  @Environment(\.presentationMode) var presentationMode
+  var postViewModel = PostViewModel()
   
   
   var body: some View {
-    
-    // TODO: This should look exactly like the Birdie table view,
-    // but with only one button.
     NavigationView {
-      
-      List() {
-        ForEach(mediaPosts.posts.indices) { index in
-//          print(mediaPosts.posts[index])
-          Text("Test \(index)")
-        }
+      Section {
+        // Posts list
+        PostView(postViewModel: postViewModel)
       }
-      .navigationBarTitle("Posts")
-      .navigationBarItems(
-        leading: EditButton(),
-        trailing:
-        Button(action: {
-//          self.modalIsPresented = true
-        }) {
-          Image(systemName: "plus")
-        }
-      )
-      
+      // Navigation view
+      .navigationBarTitle(Text("Home"), displayMode: .automatic)
+      .navigationBarItems(leading: NavigationBarImage(),
+                          trailing: NewPostButton(postViewModel: postViewModel))
     }
-    
+    .navigationViewStyle(StackNavigationViewStyle())
   }
   
 }
@@ -46,7 +34,11 @@ struct PostListView: View {
 struct PostListView_Previews: PreviewProvider {
   
   static var previews: some View {
-    PostListView(mediaPosts: PostViewModel())
+    Group {
+      PostListView(postViewModel: PostViewModel())
+      PostListView(postViewModel: PostViewModel())
+        .preferredColorScheme(.dark)
+    }
   }
   
 }
