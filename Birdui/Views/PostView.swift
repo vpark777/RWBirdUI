@@ -15,7 +15,7 @@ struct PostView: View {
   var body: some View {
     // Post cell
     List {
-      ForEach(postViewModel.posts.indices, id:\.self) { index in
+      ForEach(postViewModel.posts, id:\.self) { post in
         VStack(alignment: .leading) {
           // Post header: post icon, username and date
           HStack {
@@ -24,25 +24,25 @@ struct PostView: View {
               .frame(width: 50, height: 50)
             
             VStack(alignment: .leading, spacing: 5) {
-              Text("\(self.postViewModel.posts[index].userName)")
+              Text("\(post.userName)")
                 .font(.headline)
               
-              Text(self.postViewModel.posts[index].timestamp.toString())
+              Text(post.timestamp.toString())
                 .font(.subheadline)
             }
           }
           
           // Post body test
-          Text("\(self.postViewModel.posts[index].textBody!)")
+          Text("\(post.textBody!)")
             .font(.body)
             .frame(maxWidth: .infinity, alignment: .leading)
           
           // Post image
-          if self.postViewModel.posts[index].uiImage != nil {
+          if post.uiImage != nil {
             HStack {
               Spacer()
               
-              Image(uiImage: self.postViewModel.posts[index].uiImage!)
+              Image(uiImage: post.uiImage!)
                 .resizable()
                 .scaledToFit()
                 .frame(maxHeight: 200, alignment: .center)
