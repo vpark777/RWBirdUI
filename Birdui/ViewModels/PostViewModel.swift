@@ -42,5 +42,13 @@ class PostViewModel: ObservableObject {
       posts.append(post)
       posts = posts.sorted(by: { $0.timestamp > $1.timestamp })
   }
+    
+  func changeHeart(posts: [MediaPost],index: Int){
+      if (posts[index].heartImage == "heart_noColor") {
+          self.posts[index].heartImage = "heart_Color"
+      } else {
+          self.posts[index].heartImage = "heart_noColor"
+      }
+  }
   
 }
